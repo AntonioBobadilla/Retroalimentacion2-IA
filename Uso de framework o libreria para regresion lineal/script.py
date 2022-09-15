@@ -3,8 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn import preprocessing, svm
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error
+from sklearn.linear_model import LinearRegression, Ridge, Lasso
+from sklearn.metrics import mean_squared_error, mean_absolute_error
 
 # dataset consists of a csv containing hours of study and scores of students. 
 data = pd.read_csv('data.csv')
@@ -35,8 +35,9 @@ Pred_error_test = y_test - Y_pred
 Y_pred_train = regr.predict(X_train)
 Pred_error_train = y_train - Y_pred_train
 
-print("MSE: ",mean_squared_error(y_test, Y_pred))
-print("Model score: ", regr.score(X_test, y_test))
+print('Mean Absolute Error:', mean_absolute_error(y_test, y_pred))  
+print('Mean Squared Error:', mean_squared_error(y_test, y_pred))  
+print('Root Mean Squared Error:', np.sqrt(mean_squared_error(y_test, y_pred)))
 
 #plot
 figure, axis = plt.subplots(2,3)
@@ -54,8 +55,8 @@ axis[0,1].set_title('Histogram of test prediction error')
 axis[0,1].set(xlabel = 'Watched prediction error (Y_test - Y_pred)', ylabel = 'Frequency')
 
 
-axis[0,2].scatter(X_test, y_test, alpha = 0.3, label = 'Real data')
-axis[0,2].scatter(X_test, Pred_error_test, color='orange',alpha = 0.1, label = 'Predicted data')
+axis[0,2].scatter(range(len(X_test)), y_test, alpha = 0.3, label = 'Real data')
+axis[0,2].scatter(range(len(X_test)), Pred_error_test, color='orange',alpha = 0.1, label = 'Predicted data')
 axis[0,2].set_title("Real test data vs Predicted test data")
 axis[0,2].set(xlabel = 'Hours', ylabel = 'Score')
 axis[0,2].legend()
@@ -73,8 +74,8 @@ axis[1,1].set_title('Histogram of train prediction error')
 axis[1,1].set(xlabel = 'Watched prediction error (Y_train - Y_pred_train)', ylabel = 'Frequency')
 
 
-axis[1,2].scatter(X_train, y_train, alpha = 0.3, label = 'Real data')
-axis[1,2].scatter(X_train, Pred_error_train, color='orange',alpha = 0.1, label = 'Predicted data')
+axis[1,2].scatter(range(len(X_train)), y_train, alpha = 0.3, label = 'Real data')
+axis[1,2].scatter(range(len(X_train)), Pred_error_train, color='orange',alpha = 0.1, label = 'Predicted data')
 axis[1,2].set_title("Real train data vs Predicted train data")
 axis[1,2].set(xlabel = 'Hours', ylabel = 'Score')
 axis[1,2].legend()
